@@ -70,8 +70,10 @@ client.on("message", (message) => {
               body += data;
             });
             res.on("end", () => {
-              console.log(body)
-              message.channel.send(body)
+              if(!body.startsWith("<")) {
+                console.log(body)
+                message.channel.send(body)
+              }
             });
           });
         }
@@ -92,8 +94,10 @@ client.on("message", (message) => {
                   body += data;
                 });
                 res.on("end", () => {
-                  console.log(body)
-                  message.channel.send(body)
+                  if(!body.startsWith("<")) {
+                    console.log(body)
+                    message.channel.send(body)
+                  }              
                 });
               });
               break;
