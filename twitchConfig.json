@@ -1,0 +1,16 @@
+[
+  {
+    "name": "TestFroggyServer",
+    "discordChannels": [
+      "general"
+    ],
+    "twitchChannels": [
+      {
+        "id": 39328812,
+        "name": "FroggyP",
+        "timestamp": 0,
+        "online": false
+      }
+    ]
+  }
+]
