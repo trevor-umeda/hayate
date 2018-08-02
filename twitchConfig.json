@@ -1,13 +1,31 @@
 [
   {
-    "name": "TestFroggyServer",
+    "name": "Barnes Theater",
     "discordChannels": [
-      "general"
+      "twitch_streams"
     ],
     "twitchChannels": [
       {
         "id": 39328812,
         "name": "FroggyP",
+        "timestamp": 0,
+        "online": false
+      },
+      {
+        "id": 21351728,
+        "name": "Crownface",
+        "timestamp": 0,
+        "online": false
+      },
+      {
+        "id": 47357007,
+        "name": "Dkim4830",
+        "timestamp": 0,
+        "online": false
+      },
+      {
+        "id": 106011544,
+        "name": "Arkyser",
         "timestamp": 0,
         "online": false
       }

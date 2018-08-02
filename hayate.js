@@ -18,9 +18,7 @@ client.login(config.token).then((token)=>{
         // var file = fs.readFileSync(channelPath, {encoding:"utf-8"});
         // servers = JSON.parse(file);
         var twitchConfigFile = fs.readFileSync(twitchConfig, {encoding:"utf-8"});
-        console.log(twitchConfigFile)
-        servers = JSON.parse(twitchConfigFile);
-        console.log(servers.twitchChannels)
+        servers = JSON.parse(twitchConfigFile);        
         printLog(servers)
 
         // tick once on startup
