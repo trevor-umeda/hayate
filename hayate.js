@@ -63,8 +63,7 @@ function callApi(server, twitchChannel, callback, getStreamInfo){
         printLog(err);
         return;
     }
-    console.log(opt)
-
+    
     https.get(opt, (res)=>{
         var body = "";
 
