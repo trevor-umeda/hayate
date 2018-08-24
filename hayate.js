@@ -7,7 +7,7 @@ const http = require("http");
 const https = require("https");
 const _ = require('underscore');
 const timeout = 2 * 60 * 100;
-const interval = 30 * 1000; // The interval between polling twitch
+const interval = 45 * 1000; // The interval between polling twitch
 
 var servers = [];
 
@@ -63,7 +63,7 @@ function callApi(server, twitchChannel, callback, getStreamInfo){
         printLog(err);
         return;
     }
-    
+
     https.get(opt, (res)=>{
         var body = "";
 
