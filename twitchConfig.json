@@ -17,7 +17,12 @@
         "timestamp": 0,
         "online": false
       },
-
+      {
+        "id": 50607054,
+        "name": "sega",
+        "timestamp": 0,
+        "online": false
+      },
       {
         "id": 21351728,
         "name": "Crownface",
