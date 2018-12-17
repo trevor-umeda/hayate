@@ -10,6 +10,16 @@ const timeout = 2 * 60 * 100;
 const interval = 45 * 1000; // The interval between polling twitch
 
 var servers = [];
+var authKeys = {
+  "177972371284557825": "7F438F01",//Carlo
+  "184488644831084564": "58A207B6",//Estella
+  "76050438364856320": "2CCD8B54",//Senegos
+  "76132735151779840": "DBECC52D",//Cap'n Skraggs
+  "188824710010765312": "B7B876F2",//Timdore
+  "249093742558969858": "6759EEC4",//Mr. Frog
+  "143993628207874048": "7FCCBBD3",//Eldon
+  "143129909282340864": "137CB233"//Vindir
+}
 
 client.login(config.token).then((token)=>{
     if(token){
@@ -197,11 +207,15 @@ var reloadTags = function() {
 
 client.on("message", (message) => {
 
-
   if (message.author.bot) return;
 
   if (message.content.startsWith("ping")) {
     message.channel.send("pong!");
+  }
+
+  if(message.content.startsWith("!authKey")) {
+    console.log(message.author.id)
+    message.channel.send(authKeys[message.author.id]);
   }
 
   if(message.content.startsWith("reload tags")) {
