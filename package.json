@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
-    "discord.js": "^11.1.0"
+    "discord.js": "^11.1.0",
+    "underscore": "^1.9.1",
+    "twilio": "^3.30.2"
   },
   "devDependencies": {},
   "scripts": {

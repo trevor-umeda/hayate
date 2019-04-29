@@ -2,12 +2,17 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const config = require("./config.json");
 const twitchConfig = __dirname + "/twitchConfig.json"
+const incomingMessagesFile = config.incomingMessagesDir + "/incomingMessages"
 const fs = require("fs");
 const http = require("http");
 const https = require("https");
 const _ = require('underscore');
 const timeout = 2 * 60 * 100;
 const interval = 45 * 1000; // The interval between polling twitch
+
+const twilioAccountSid = 'ACfae78cc76df706fc48fbf9187f155f52';
+const twilioAuthToken = 'e834adf31f439a12996c6f6da81ef978';
+const twilioClient = require('twilio')(twilioAccountSid, twilioAuthToken);
 
 var servers = [];
 var authKeys = {
@@ -213,6 +218,16 @@ client.on("message", (message) => {
     message.channel.send("pong!");
   }
 
+  if(message.content.startsWith("!text")) {
+    var textMessage = message.content.substr(6);
+    sendTextMessage(textMessage)
+  }
+
+  if(message.content.indexOf("@FroggyP#0268") >= 0) {
+    var textMessage = message.content;
+    sendTextMessage(textMessage)
+  }
+
   if(message.content.startsWith("!authKey")) {
     console.log(message.author.id)
     message.channel.send(authKeys[message.author.id]);
@@ -281,6 +296,16 @@ client.on("message", (message) => {
   }
 });
 
+client.setInterval(function(){
+  var array = fs.readFileSync(incomingMessagesFile).toString().split("\n");
+  for(i in array) {
+    if(array[i]){
+      console.log(array[i]);
+    }
+  }
+  fs.writeFile(incomingMessagesFile, '', function(){})
+}, 3000)
+
 /*
   Utility
 */
@@ -302,6 +327,16 @@ function printLog(msg, err){
     if(err){
         console.log(err);
     }
+}
+
+function sendTextMessage(textMessage) {
+  twilioClient.messages
+    .create({
+       body: textMessage,
+       from: '+16267142725',
+       to: '+16264970300'
+     })
+    .then(message => console.log(message.sid));
 }
 
 function indexOfObjectByName(array, value){
