@@ -28,6 +28,7 @@ var authKeys = {
 
 client.login(config.token).then((token)=>{
     if(token){
+
         // printLog("Logged in with token " + token);
         printLog("Reading Twitch config file file " + twitchConfig);
         // var file = fs.readFileSync(channelPath, {encoding:"utf-8"});
@@ -300,10 +301,12 @@ client.setInterval(function(){
   var array = fs.readFileSync(incomingMessagesFile).toString().split("\n");
   for(i in array) {
     if(array[i]){
-      // console.log(array[i]);
-      console.log(client.fetchUser("188824710010765312"))
-      client.fetchUser("188824710010765312")
-      .then(user => user.sendMessage(array[i]));
+      var message = array[i];
+      console.log(message);
+      let user = client.users.find(user => user.username == "FroggyP");
+      console.log(user)
+      client.fetchUser(user.id)
+      .then(user => user.send(message));
     }
   }
   fs.writeFile(incomingMessagesFile, '', function(){})
