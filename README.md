@@ -2,6 +2,9 @@
 
 A [discord.js](https://discord.js.org/) bot that does goofy things.
 
+## To run
+`node hayate.js`
+
 ### Reactions
 
 Will post user entered reaction images. Due to the magic of discord hayate can just post
