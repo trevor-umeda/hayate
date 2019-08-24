@@ -36,8 +36,13 @@ var msgAlias = {
   "colin":"Intelligent Malfestio"
 }
 
+var chatroomAlias = {
+  "test": ""
+}
+
 client.login(config.token).then((token)=>{
     if(token){
+
       var data = "[]"
       fs.writeFile(textExplanation, data, { flag: 'wx' }, function (err) {
         if (err) {}
@@ -315,30 +320,41 @@ client.setInterval(function(){
   for(i in array) {
     if(array[i]){
       var message = array[i];
-      console.log(message);
-      var username = determineMessageRecipient(message);
-      let user = client.users.find(user => user.username == username);
-      console.log(user)
 
-      if(firstTimeTexting(username)) {
+      if(sendToChatroom(message)) {
+        var guildName = message.split(" ")[1];
+        var guild = client.guilds.find("name", guildName);
+        var channelName = message.split(" ")[2];
+        var guildChannel = guild.channels.find("name", channelName);
+        var fullLength = guildName.length + channelName.length + 7;
+        var finalMessage = 'Trevor: "' + message.substr(fullLength) + '"'
+        console.log("Sending message to " + username + " : " + finalMessage);
+        guildChannel.send(finalMessage);
+      } else {
+        var username = determineMessageRecipient(message);
+        let user = client.users.find(user => user.username == username);
+        if(firstTimeTexting(username)) {
+          client.fetchUser(user.id)
+          .then(user => user.send("Receiving a text from Trevor! To reply back just type !text <and your message>"));
+        }
+        var usernameLength = getUsernameLength(message);
+        message = message.replace(/^\s+|\s+$/g, '');
+        var finalMessage = 'Trevor: "' + message.substr(usernameLength) + '"'
+
+        console.log("Sending message to " + username + " : " + finalMessage);
         client.fetchUser(user.id)
-        .then(user => user.send("Receiving a text from Trevor! To reply back just type !text <and your message>"));
+        .then(user => user.send(finalMessage));
       }
-      message = message.replace(/^\s+|\s+$/g, '');
-      var finalMessage = 'Trevor: "' + message.substr(username.length) + '"'
-      client.fetchUser(user.id)
-      .then(user => user.send(finalMessage));
+
     }
   }
   fs.writeFile(incomingMessagesFile, '', function(){})
 }, 3000)
 
+
 function firstTimeTexting(username) {
     var textExplanationJson = fs.readFileSync(textExplanation, {encoding:"utf-8"});
     textExplanationCache = JSON.parse(textExplanationJson);
-    console.log(textExplanationCache)
-    console.log(textExplanationCache.indexOf(username) >= 0)
-    console.log(username)
     if(textExplanationCache.indexOf(username) >= 0) {
       return false;
     } else {
@@ -348,10 +364,19 @@ function firstTimeTexting(username) {
       return true;
     }
 }
+function sendToChatroom(message) {
+  if(message.startsWith("chat ")) {
+    return true;
+  }
+  return false;
+}
+
+function getUsernameLength(message) {
+  return message.split(" ")[0].length+1;
+}
 
 function determineMessageRecipient(message) {
     var recipient = message.split(" ")[0];
-    console.log(recipient);
     if(msgAlias[recipient.toLowerCase()]) {
       return msgAlias[recipient.toLowerCase()];
     } else {
