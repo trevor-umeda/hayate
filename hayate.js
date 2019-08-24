@@ -120,7 +120,7 @@ function apiCallback(server, twitchChannel, res){
             if(server.discordChannels.length === 0){
                 defaultChannel = guild.channels.find("type", "text");
             }else{
-                for(let i = 0; i < server.discordChannels.length; i++){
+                for(var i = 0; i < server.discordChannels.length; i++){
                     channels.push(guild.channels.find("name", server.discordChannels[i]));
                 }
             }
@@ -146,7 +146,7 @@ function apiCallback(server, twitchChannel, res){
                           .addField("Viewers", res.stream.viewers, true)
                           .addField("Followers", res.stream.channel.followers, true);
             if(channels.length !== 0){
-                for(let i = 0; i < channels.length; i++){
+                for(var i = 0; i < channels.length; i++){
                     channels[i].send(embed).then(
                         printLog("Sent embed to channel '" + channels[i].name +
                               "'."));
@@ -170,8 +170,8 @@ function apiCallback(server, twitchChannel, res){
     }
 }
 function checkTwitchChannelsTick(){
-    for(let i = 0; i < servers.length; i++){
-        for(let j = 0; j < servers[i].twitchChannels.length; j++){
+    for(var i = 0; i < servers.length; i++){
+        for(var j = 0; j < servers[i].twitchChannels.length; j++){
             if(servers[i].twitchChannels[j]){
                 callApi(servers[i], servers[i].twitchChannels[j], apiCallback, true);
             }
@@ -186,7 +186,7 @@ client.on("ready", () => {
 
 
 // Global state.
-let tags = null
+var tags = null
 
 /*
   Reaction images
@@ -199,7 +199,7 @@ const imgUrl = "http://vast-castle-1062.herokuapp.com/image?tag="
 var reloadTags = function() {
   http.get(tagUrl, res => {
     res.setEncoding("utf8");
-    let body = "";
+    var body = "";
     res.on("data", data => {
       body += data;
     });
@@ -236,7 +236,7 @@ client.on("message", (message) => {
 
   if(message.content.startsWith("reload tags")) {
       console.log("Reloading tags")
-      let role = message.guild.roles.find("name", "Contributor");
+      var role = message.guild.roles.find("name", "Contributor");
       message.member.addRole(role).catch(console.error);
       reloadTags();
       message.channel.send("Tags reloaded!");
@@ -246,7 +246,7 @@ client.on("message", (message) => {
     console.log(tags)
   }
 
-  let parsedSentence = message.content.trim().split(/\s+/)
+  var parsedSentence = message.content.trim().split(/\s+/)
   if(tags) {
     if(parsedSentence.length <= 5){
       //If the sentence is one word, our job is easy
@@ -257,7 +257,7 @@ client.on("message", (message) => {
           //Get a random image to post and then post it
           http.get(imgUrl + foundTags[0], res => {
             res.setEncoding("utf8");
-            let body = "";
+            var body = "";
             res.on("data", data => {
               body += data;
             });
@@ -271,7 +271,7 @@ client.on("message", (message) => {
       else if (parsedSentence.length > 1) {
         //For ever tag, see if it is in the sentence
         for(var i = 0; i < tags.length; i++) {
-          let tag = tags[i];
+          var tag = tags[i];
           sentenceString = message.content.trim()
           if(sentenceString.indexOf(tag) >= 0){
             if(sentenceString.indexOf(tag + " ") == 0 || sentenceString.indexOf(" " + tag) == (sentenceString.length - tag.length - 1) || sentenceString.indexOf(" " + tag + " ") > 0) {
@@ -279,7 +279,7 @@ client.on("message", (message) => {
               formattedTag = tag.replace(/%20/g, "%20")
               http.get(imgUrl + formattedTag, res => {
                 res.setEncoding("utf8");
-                let body = "";
+                var body = "";
                 res.on("data", data => {
                   body += data;
                 });
@@ -303,7 +303,7 @@ client.setInterval(function(){
     if(array[i]){
       var message = array[i];
       console.log(message);
-      let user = client.users.find(user => user.username == "FroggyP");
+      var user = client.users.find(user => user.username == "FroggyP");
       console.log(user)
       client.fetchUser(user.id)
       .then(user => user.send(message));
@@ -346,7 +346,7 @@ function sendTextMessage(textMessage) {
 }
 
 function indexOfObjectByName(array, value){
-    for(let i = 0; i < array.length; i++){
+    for(var i = 0; i < array.length; i++){
         if(array[i].name.toLowerCase().trim() === value.toLowerCase().trim()){
             return i;
         }
