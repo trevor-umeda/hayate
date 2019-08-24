@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const client = new Discord.Client();
 const config = require("./config.json");
 const twitchConfig = __dirname + "/twitchConfig.json"
+const textExplanation = __dirname + "/textExplanationFirstTime.json"
 const incomingMessagesFile = config.incomingMessagesDir + "/incomingMessages"
 const fs = require("fs");
 const http = require("http");
@@ -26,9 +27,21 @@ var authKeys = {
   "143129909282340864": "137CB233"//Vindir
 }
 
+var msgAlias = {
+  "trevor": "FroggyP",
+  "katy": "inktho",
+  "jon":"Horsejoke",
+  "liang":"Liang",
+  "dkim":"dkim",
+  "colin":"Intelligent Malfestio"
+}
+
 client.login(config.token).then((token)=>{
     if(token){
-
+      var data = "[]"
+      fs.writeFile(textExplanation, data, { flag: 'wx' }, function (err) {
+        if (err) {}
+      });
         // printLog("Logged in with token " + token);
         printLog("Reading Twitch config file file " + twitchConfig);
         // var file = fs.readFileSync(channelPath, {encoding:"utf-8"});
@@ -303,14 +316,48 @@ client.setInterval(function(){
     if(array[i]){
       var message = array[i];
       console.log(message);
-      let user = client.users.find(user => user.username == "FroggyP");
+      var username = determineMessageRecipient(message);
+      let user = client.users.find(user => user.username == username);
       console.log(user)
+
+      if(firstTimeTexting(username)) {
+        client.fetchUser(user.id)
+        .then(user => user.send("Receiving a text from Trevor! To reply back just type !text <and your message>"));
+      }
+
+      var finalMessage = 'Trevor: "' + message.substr(username.length) + '"'
       client.fetchUser(user.id)
-      .then(user => user.send(message));
+      .then(user => user.send(finalMessage));
     }
   }
   fs.writeFile(incomingMessagesFile, '', function(){})
 }, 3000)
+
+function firstTimeTexting(username) {
+    var textExplanationJson = fs.readFileSync(textExplanation, {encoding:"utf-8"});
+    textExplanationCache = JSON.parse(textExplanationJson);
+    console.log(textExplanationCache)
+    console.log(textExplanationCache.indexOf(username) >= 0)
+    console.log(username)
+    if(textExplanationCache.indexOf(username) >= 0) {
+      return false;
+    } else {
+
+      textExplanationCache.push(username)
+      fs.writeFileSync(textExplanation, JSON.stringify(textExplanationCache));
+      return true;
+    }
+}
+
+function determineMessageRecipient(message) {
+    var recipient = message.split(" ")[0];
+    console.log(recipient);
+    if(msgAlias[recipient.toLowerCase()]) {
+      return msgAlias[recipient.toLowerCase()];
+    } else {
+      return recipient;
+    }
+}
 
 /*
   Utility
