@@ -324,7 +324,7 @@ client.setInterval(function(){
         client.fetchUser(user.id)
         .then(user => user.send("Receiving a text from Trevor! To reply back just type !text <and your message>"));
       }
-
+      message = message.replace(/^\s+|\s+$/g, '');
       var finalMessage = 'Trevor: "' + message.substr(username.length) + '"'
       client.fetchUser(user.id)
       .then(user => user.send(finalMessage));
