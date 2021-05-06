@@ -5,7 +5,7 @@
   "main": "index.js",
   "dependencies": {
     "discord.js": "^11.1.0",
-    "underscore": "^1.9.1",
+    "underscore": "^1.12.1",
     "twilio": "^3.30.2",
     "ws": ">=3.3.1",
     "lodash": ">=4.17.13"
